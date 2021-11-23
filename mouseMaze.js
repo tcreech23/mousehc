@@ -5,6 +5,10 @@ shadedCube.js*/
 var canvas;
 var gl;
 
+var image = [ ];
+var texCoordsArray = []; // holds texture coordinates
+var texture = [ ];  // array of textures
+
 var numVertices  = 36;
 
 var pointsArray = [];
@@ -131,6 +135,21 @@ function colorBoard()
     quadBoard( 5, 4, 0, 1 );
 }
 
+// function configureTexture() configures the texture for use
+function configureTexture( image, id ) {
+   texture[id] = gl.createTexture();
+   gl.bindTexture( gl.TEXTURE_2D, texture[id] );
+   gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+   gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGB, 
+        gl.RGB, gl.UNSIGNED_BYTE, image );
+   gl.generateMipmap( gl.TEXTURE_2D );
+   gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, 
+                     gl.NEAREST_MIPMAP_LINEAR );
+   gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST );
+   
+   gl.uniform1i(gl.getUniformLocation(program, "texture"), 0);
+}
+
 
 window.onload = function init() {
     canvas = document.getElementById( "gl-canvas" );
@@ -195,6 +214,14 @@ window.onload = function init() {
     gl.uniformMatrix4fv( gl.getUniformLocation(program, "projectionMatrix"),
        false, flatten(projection));
 
+   // initialize textures
+	 initializeTexture(image, "cheese.jpg", 0);
+	
+    thetaLoc = gl.getUniformLocation(program, "theta");
+  
+    modelView = gl.getUniformLocation( program, "modelView" );
+    projection = gl.getUniformLocation( program, "projection" );
+
     window.onkeydown = keyResponse;
     
     render();
@@ -224,6 +251,19 @@ var render = function(){
 
    setLightProducts(ambientProduct, diffuseProduct, specularProduct);
    gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"), flatten(lightPosition) );
+
+   mvMatrix = mat4( );
+	mvMatrix = mult(mvMatrix, rotate(theta[0], 1.0, 0.0, 0.0));
+   mvMatrix = mult(mvMatrix, rotate(theta[1], 0.0, 1.0, 0.0));
+   mvMatrix = mult(mvMatrix, rotate(theta[2], 0.0, 0.0, 1.0));
+	pMatrix = perspective(45.0, 1.0, 1.0, 500.0);
+	
+	gl.uniformMatrix4fv( projection, false, flatten(pMatrix) );
+	gl.uniformMatrix4fv( modelView, false, flatten(mvMatrix) );
+
+	gl.bindTexture( gl.TEXTURE_2D, texture[0] );
+		// one texture per side
+	gl.drawArrays( gl.TRIANGLES, 0, points.length );
             
    modelView = mat4();
    modelView = mult(modelView, rotate(45, [1, 0, 0] ));
@@ -254,6 +294,15 @@ var render = function(){
             
             
    requestAnimFrame(render);
+}
+
+// initializes textures and put them into an array
+function initializeTexture( myImage, fileName, id) {
+	myImage[id] = new Image();
+	myImage[id].onload = function() {
+		configureTexture( myImage[id], id );
+	}
+	myImage[id].src = fileName;
 }
 
 function setLightProducts(ambientProduct, diffuseProduct, specularProduct){
