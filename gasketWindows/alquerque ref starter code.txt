@@ -1,0 +1,77 @@
+
+            /*if(curPlayer == 0){
+                if(!clickToggle){
+                    tableSquare.isShown = (tableSquare.isShown == 0) ? 1 : 0;
+                    clickToggle = !clickToggle;
+                    heldPiece = squares[i];
+                } else {
+                    if(tableSquare.isShown == 0){
+                        tableSquare.isShown = 1;
+                        tableSquare.color = curPlayer;
+                        curPlayer = (curPlayer == 0) ? 1 : 0;
+                        clickToggle = !clickToggle;
+                    }
+                }
+            } else{
+                if(!clickToggle){
+                    tableSquare.isShown = (tableSquare.isShown == 0) ? 1 : 0;
+                    squares[i] = tableSquare;
+                    clickToggle = !clickToggle;
+                } else {
+                    if(tableSquare.isShown == 0){
+                        tableSquare.isShown = 1;
+                        tableSquare.color = curPlayer;
+                        curPlayer = (curPlayer == 1) ? 0 : 1;
+                    }
+                    squares[i] = tableSquare;
+                    clickToggle = !clickToggle;
+                }
+            }*/
+            /*if(tableSquare.isShown == 0){
+                console.log("theres no Square there!");
+                if(!gameStart){     //if game isnt started and user clicks empty square, do NOTHING
+                    console.log("Game hasnt started and user clicked empty square");
+                } else { //if game is started and user clicks empty square, check to see if there is a held piece, then drop it
+                    if(heldPiece != null){
+                        console.log("the game is in session and we are holding a piece. Dropping and clearing heldPiece.")
+                        squares[i] = heldPiece;
+                        tableSquare.isShown = 0;
+                        squares[heldOrigin] = tableSquare;
+                        heldPiece = null;
+                    }
+                }
+            } else {   //if current square is populated
+                console.log("theres a square there!");
+                if(!gameStart){ // if game hasn't started yet, start game and pick up piece (leaving it on the board as well)
+                    console.log("current square populated... starting game and picking up a piece!");
+                    gameStart = true;
+                    heldPiece = tableSquare;
+                    heldOrigin = i;
+                } else {
+                    console.log("The value of heldPiece is" + heldPiece);
+                    if(heldPiece != null){ //if we have a piece picked up
+                        console.log("i can see that were holding a piece...")
+                        if(tableSquare.position == heldPiece.position){ //if a double click, remove piece
+                            tableSquare.isShown = 0;
+                            squares[i] = tableSquare;
+                            heldPiece = null;
+                            console.log("double clicking, so I will remove the piece!")
+                        } else{
+                            //tableSquare.color = heldPiece.color;
+                            //heldPiece.isShown = 0;
+                            //squares[heldOrigin] = heldPiece;
+                            //heldPiece = null;
+                            //squares[i] = tableSquare;
+                            console.log("The game is started, so ill grab the piece for u!")
+                            heldPiece = tableSquare;
+                            heldOrigin = i;
+                        }
+
+                    } else {
+                        console.log("game started, picking up the piece...")
+                        heldPiece = tableSquare;
+                        console.log(heldPiece);
+                        heldOrigin = i;
+                    }
+                }
+            }*/
